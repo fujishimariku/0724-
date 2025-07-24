@@ -1,0 +1,123 @@
+<!-- tracker/templates/tracker/home.html -->
+{% extends 'tracker/base.html' %}
+
+{% block title %}チョイシェアMAP - ホーム{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body text-center">
+                <h1 class="card-title mb-4">
+                    チョイシェアMAP
+                </h1>
+                
+                <p class="card-text lead mb-4">
+                    登録不要で一時的に位置情報を共有できるサービスです。<br>
+                    今だけ伝えたい場所がある方へ。すぐに・安全に、あとくされなく。スマートな共有体験
+                </p>
+                
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <div class="feature-item">
+                            <i class="fas fa-clock text-primary fa-2x mb-2"></i>
+                            <h5>時間制限</h5>
+                            <p class="text-muted">設定した時間で自動終了</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="feature-item">
+                            <i class="fas fa-shield-alt text-primary fa-2x mb-2"></i>
+                            <h5>プライバシー重視</h5>
+                            <p class="text-muted">登録不要・自動削除</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="feature-item">
+                            <i class="fas fa-users text-primary fa-2x mb-2"></i>
+                            <h5>複数人対応</h5>
+                            <p class="text-muted">何人でも参加可能</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <form method="post" action="{% url 'tracker:create_session' %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="duration" class="form-label">共有時間を選択</label>
+                        <select class="form-select" id="duration" name="duration" required>
+                            <option value="15">15分</option>
+                            <option value="30" selected>30分</option>
+                            <option value="60">1時間</option>
+                            <option value="120">2時間</option>
+                            <option value="240">4時間</option>
+                            <option value="420">8時間</option>
+                            <option value="720">12時間</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        <i class="fas fa-play"></i> 位置共有を開始
+                    </button>
+                </form>
+                
+                <div class="mt-4">
+                    <small class="text-muted">
+                        <i class="fas fa-info-circle"></i>
+                        位置情報の利用には端末の許可が必要です。
+                    </small>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-question-circle"></i> 使い方
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="list-group">
+                        <div class="list-group-item d-flex align-items-start">
+                            <span class="badge bg-primary rounded-pill me-3">1</span>
+                            <div>
+                                <div class="fw-bold">共有時間を選択</div>
+                                位置情報を共有する時間を選択します
+                            </div>
+                        </div>
+                        <div class="list-group-item d-flex align-items-start">
+                            <span class="badge bg-primary rounded-pill me-3">2</span>
+                            <div>
+                                <div class="fw-bold">共有URLを送信</div>
+                                生成されたURLを友達に送信します
+                            </div>
+                        </div>
+                        <div class="list-group-item d-flex align-items-start">
+                            <span class="badge bg-primary rounded-pill me-3">3</span>
+                            <div>
+                                <div class="fw-bold">位置情報を許可</div>
+                                参加者は位置情報の利用を許可します
+                            </div>
+                        </div>
+                        <div class="list-group-item d-flex align-items-start">
+                            <span class="badge bg-primary rounded-pill me-3">4</span>
+                            <div>
+                                <div class="fw-bold">マップで確認</div>
+                                全員の位置がマップ上に表示されます
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.feature-item {
+    padding: 20px;
+    text-align: center;
+}
+</style>
+{% endblock %}
