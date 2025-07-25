@@ -1,0 +1,106 @@
+<!-- tracker/templates/tracker/session_created.html -->
+{% extends 'tracker/base.html' %}
+{% load static %}
+{% block title %}セッション作成完了{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body text-center">
+                <div class="text-success mb-3">
+                    <i class="fas fa-check-circle fa-3x"></i>
+                </div>
+                
+                <h2 class="card-title text-success">位置共有セッションが作成されました</h2>
+                
+                <div class="alert alert-info mt-4">
+                    <i class="fas fa-clock"></i>
+                    <strong>有効期限:</strong> 
+                    <span id="expires-time">{{ expires_at|date:"Y年m月d日 H:i" }}</span>
+                    <br>
+                    <small>残り時間: <span id="countdown" class="countdown"></span></small>
+                </div>
+                
+                <div class="mt-4">
+                        <h5>共有URL <br>
+                        <span style="font-size: 0.9em; color: #dc3545;">※取り扱いにご注意ください。</span></h5>
+                        <div class="input-group mb-3">                        <input type="text" class="form-control" id="share-url" value="{{ share_url }}" readonly>
+                        <button class="btn btn-outline-secondary" type="button" id="copy-url">
+                            <i class="fas fa-copy"></i> コピー
+                        </button>
+                    </div>
+                    <small class="text-success" id="copy-success" style="display: none;">
+                        <i class="fas fa-check"></i> URLがクリップボードにコピーされました
+                    </small>
+                    <small class="text-danger" id="copy-error" style="display: none;">
+                        <i class="fas fa-exclamation-triangle"></i> コピーできませんでした。手動でURLを選択してコピーしてください
+                    </small>
+                </div>
+                
+                <div class="mt-4">
+                    <h5>QRコード</h5>
+                    <div id="qr-code" class="mb-3 d-flex justify-content-center">
+                        <div class="text-muted">
+                            <i class="fas fa-spinner fa-spin"></i> QRコードを生成中...
+                        </div>
+                    </div>
+                    <small class="text-muted">スマートフォンで読み取って共有できます</small>
+                </div>
+                
+                <div class="mt-4">
+                    <a href="{{ share_url }}" class="btn btn-primary btn-lg me-2">
+                        <i class="fas fa-map-marker-alt"></i> マップを開く
+                    </a>
+                    <a href="{% url 'tracker:home' %}" class="btn btn-secondary">
+                        <i class="fas fa-home"></i> ホームに戻る
+                    </a>
+                </div>
+                
+                <div class="mt-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h6 class="mb-0">
+                                <i class="fas fa-info-circle"></i> 共有方法
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <h6>LINE</h6>
+                                    <button class="btn btn-success btn-sm w-100" onclick="shareToLine()">
+                                        <i class="fab fa-line"></i> LINEで共有
+                                    </button>
+                                </div>
+                                <div class="col-md-4">
+                                    <h6>メール</h6>
+                                    <button class="btn btn-primary btn-sm w-100" onclick="shareToEmail()">
+                                        <i class="fas fa-envelope"></i> メールで共有
+                                    </button>
+                                </div>
+                                <div class="col-md-4">
+                                    <h6>その他</h6>
+                                    <button class="btn btn-info btn-sm w-100" onclick="shareGeneral()">
+                                        <i class="fas fa-share-alt"></i> 共有
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    window.djangoData = {
+        expiresAt: '{{ expires_at|date:"c" }}',
+        shareUrl: '{{ share_url }}',
+    };
+</script>
+<script src="{% static 'js/common.js' %}"></script>
+<script src="{% static 'js/qr-sharing.js' %}"></script>
+{% endblock %}
